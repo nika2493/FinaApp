@@ -3,14 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31912.275
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinaApp", "FinaApp\FinaApp.csproj", "{F5639ED8-5F0D-42D8-A8E0-FB058C7D8A7C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinaApp", "FinaApp\FinaApp.csproj", "{F5639ED8-5F0D-42D8-A8E0-FB058C7D8A7C}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7F4525ED-C296-4914-90A7-0AAADA9E6083}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinaData", "FinaData\FinaData.csproj", "{4400893F-ADDF-40CB-BA83-D7023B99692C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DB923396-2D95-49D9-A925-4C2632D98E55}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinaData", "FinaData\FinaData.csproj", "{4400893F-ADDF-40CB-BA83-D7023B99692C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

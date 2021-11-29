@@ -14,12 +14,12 @@ public class ProductModel
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
     [Required]
-    public int ProductionCode { get; set; }
+    public int Code { get; set; }
     [Required]
     [StringLength(100)]
     public string Name { get; set; }
     [Required]
-    public double Price { get; set; }
+    public decimal Price { get; set; }
     [Required]
     public CountryModel Country { get; set; }
     [Required]
