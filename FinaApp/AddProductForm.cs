@@ -9,17 +9,25 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using FinaData.Data;
 using FinaData.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace FinaApp;
 
 public partial class AddProductForm : Form
 {
     private readonly ProductionDbContext _db;
-    private ProductModel Product { get; set; } = new();
+    private ProductModel _product = new();
     public AddProductForm(ProductionDbContext db)
     {
         _db = db;
+
         InitializeComponent();
+
+        ProductCountryComboBox.DataSource = _db.Countries.ToList();
+        ProductCountryComboBox.DisplayMember = "Name";
+        ProductCountryComboBox.ValueMember = "Id";
+        ProductCountryComboBox.SelectedIndex = 0;
+        ProductCountryComboBox.Invalidate();
     }
 
     private void CancelBtn_Click(object sender, EventArgs e)
@@ -29,14 +37,14 @@ public partial class AddProductForm : Form
 
     private void SaveBtn_Click(object sender, EventArgs e)
     {
-        Product.Code = (int)ProductCodeTextBox.Value;
-        Product.Name = (string)ProductNameTextBox.Text;
-        Product.Price = (decimal)ProductPriceTextBox.Value;
-        Product.Country = (CountryModel)ProductCountryComboBox.SelectedItem;
-        Product.StarDate = ProductStartDateTimePicker.Value;
-        Product.EndDate = ProductEndDateTimePicker.Value;
-        _db.AddAsync(Product);
-        _db.SaveChangesAsync();
+        _product.Code = (int)ProductCodeTextBox.Value;
+        _product.Name = (string)ProductNameTextBox.Text;
+        _product.Price = (decimal)ProductPriceTextBox.Value;
+        _product.Country = (CountryModel)ProductCountryComboBox.SelectedItem;
+        _product.StarDate = ProductStartDateTimePicker.Value;
+        _product.EndDate = ProductEndDateTimePicker.Value;
+        _db.Production.Add(_product);
+        _db.SaveChanges();
         Close();
     }
 }

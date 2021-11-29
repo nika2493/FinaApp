@@ -43,10 +43,10 @@
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.DiagramBtn = new System.Windows.Forms.ToolStripButton();
             this.ProductGridView = new System.Windows.Forms.DataGridView();
-            this.productionCodeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.productModelBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.codeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.nameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.priceDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.productModelBindingSource = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -203,7 +203,7 @@
             this.ProductGridView.AutoGenerateColumns = false;
             this.ProductGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.ProductGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.productionCodeDataGridViewTextBoxColumn,
+            this.codeDataGridViewTextBoxColumn,
             this.nameDataGridViewTextBoxColumn,
             this.priceDataGridViewTextBoxColumn});
             this.ProductGridView.DataSource = this.productModelBindingSource;
@@ -213,21 +213,27 @@
             this.ProductGridView.Size = new System.Drawing.Size(528, 420);
             this.ProductGridView.TabIndex = 1;
             // 
-            // productionCodeDataGridViewTextBoxColumn
+            // productModelBindingSource
             // 
-            this.productionCodeDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.productionCodeDataGridViewTextBoxColumn.DataPropertyName = "ProductionCode";
-            this.productionCodeDataGridViewTextBoxColumn.FillWeight = 20F;
-            this.productionCodeDataGridViewTextBoxColumn.HeaderText = "კოდი";
-            this.productionCodeDataGridViewTextBoxColumn.Name = "productionCodeDataGridViewTextBoxColumn";
+            this.productModelBindingSource.DataSource = typeof(FinaData.Models.ProductModel);
+            // 
+            // codeDataGridViewTextBoxColumn
+            // 
+            this.codeDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.codeDataGridViewTextBoxColumn.DataPropertyName = "Code";
+            this.codeDataGridViewTextBoxColumn.FillWeight = 15F;
+            this.codeDataGridViewTextBoxColumn.HeaderText = "კოდი";
+            this.codeDataGridViewTextBoxColumn.Name = "codeDataGridViewTextBoxColumn";
+            this.codeDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // nameDataGridViewTextBoxColumn
             // 
             this.nameDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.nameDataGridViewTextBoxColumn.DataPropertyName = "Name";
-            this.nameDataGridViewTextBoxColumn.FillWeight = 60F;
+            this.nameDataGridViewTextBoxColumn.FillWeight = 65F;
             this.nameDataGridViewTextBoxColumn.HeaderText = "დასახელება";
             this.nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
+            this.nameDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // priceDataGridViewTextBoxColumn
             // 
@@ -236,10 +242,7 @@
             this.priceDataGridViewTextBoxColumn.FillWeight = 20F;
             this.priceDataGridViewTextBoxColumn.HeaderText = "ფასი";
             this.priceDataGridViewTextBoxColumn.Name = "priceDataGridViewTextBoxColumn";
-            // 
-            // productModelBindingSource
-            // 
-            this.productModelBindingSource.DataSource = typeof(FinaData.Models.ProductModel);
+            this.priceDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // MainForm
             // 
@@ -280,9 +283,9 @@
         private ToolStripButton DiagramBtn;
         private DataGridView ProductGridView;
         private BindingSource productModelBindingSource;
-        private DataGridViewTextBoxColumn productionCodeDataGridViewTextBoxColumn;
+        private TreeView GroupTreeView; 
+        private DataGridViewTextBoxColumn codeDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn priceDataGridViewTextBoxColumn;
-        private TreeView GroupTreeView;
     }
 }
