@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("პროდუქტები");
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.GroupTreeView = new System.Windows.Forms.TreeView();
+            this.groupModelBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.toolStrip2 = new System.Windows.Forms.ToolStrip();
             this.AddGroupBtn = new System.Windows.Forms.ToolStripButton();
             this.EditGroupBtn = new System.Windows.Forms.ToolStripButton();
@@ -43,14 +43,15 @@
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.DiagramBtn = new System.Windows.Forms.ToolStripButton();
             this.ProductGridView = new System.Windows.Forms.DataGridView();
-            this.productModelBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.codeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.nameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.priceDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.productModelBindingSource = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.groupModelBindingSource)).BeginInit();
             this.toolStrip2.SuspendLayout();
             this.toolStrip3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ProductGridView)).BeginInit();
@@ -81,15 +82,15 @@
             this.GroupTreeView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.GroupTreeView.DataBindings.Add(new System.Windows.Forms.Binding("Tag", this.groupModelBindingSource, "Name", true));
             this.GroupTreeView.Location = new System.Drawing.Point(0, 28);
             this.GroupTreeView.Name = "GroupTreeView";
-            treeNode1.Name = "products";
-            treeNode1.Tag = "";
-            treeNode1.Text = "პროდუქტები";
-            this.GroupTreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1});
             this.GroupTreeView.Size = new System.Drawing.Size(265, 420);
             this.GroupTreeView.TabIndex = 1;
+            // 
+            // groupModelBindingSource
+            // 
+            this.groupModelBindingSource.DataSource = typeof(FinaData.Models.GroupModel);
             // 
             // toolStrip2
             // 
@@ -111,6 +112,7 @@
             this.AddGroupBtn.Name = "AddGroupBtn";
             this.AddGroupBtn.Size = new System.Drawing.Size(23, 22);
             this.AddGroupBtn.Text = "ჯგუფის დამატება";
+            this.AddGroupBtn.Click += new System.EventHandler(this.AddGroupBtn_Click);
             // 
             // EditGroupBtn
             // 
@@ -120,6 +122,7 @@
             this.EditGroupBtn.Name = "EditGroupBtn";
             this.EditGroupBtn.Size = new System.Drawing.Size(23, 22);
             this.EditGroupBtn.Text = "ჯგუფის ჩასწორება";
+            this.EditGroupBtn.Click += new System.EventHandler(this.EditGroupBtn_Click);
             // 
             // DeleteGroupBtn
             // 
@@ -130,6 +133,7 @@
             this.DeleteGroupBtn.Size = new System.Drawing.Size(23, 22);
             this.DeleteGroupBtn.Text = "ჯგუფის წაშლა";
             this.DeleteGroupBtn.ToolTipText = "ჯგუფი ს წაშლა";
+            this.DeleteGroupBtn.Click += new System.EventHandler(this.DeleteGroupBtn_Click);
             // 
             // toolStrip3
             // 
@@ -163,6 +167,7 @@
             this.EditProductBtn.Name = "EditProductBtn";
             this.EditProductBtn.Size = new System.Drawing.Size(23, 22);
             this.EditProductBtn.Text = "პროდუქტის ჩასწორება";
+            this.EditProductBtn.Click += new System.EventHandler(this.EditProductBtn_Click);
             // 
             // DeleteProductBtn
             // 
@@ -172,6 +177,7 @@
             this.DeleteProductBtn.Name = "DeleteProductBtn";
             this.DeleteProductBtn.Size = new System.Drawing.Size(23, 22);
             this.DeleteProductBtn.Text = "პროდუქტის წაშლა";
+            this.DeleteProductBtn.Click += new System.EventHandler(this.DeleteProductBtn_Click);
             // 
             // toolStripButton1
             // 
@@ -191,6 +197,7 @@
             this.DiagramBtn.Name = "DiagramBtn";
             this.DiagramBtn.Size = new System.Drawing.Size(70, 22);
             this.DiagramBtn.Text = "დიაგრამა";
+            this.DiagramBtn.Click += new System.EventHandler(this.DiagramBtn_Click);
             // 
             // ProductGridView
             // 
@@ -208,14 +215,13 @@
             this.priceDataGridViewTextBoxColumn});
             this.ProductGridView.DataSource = this.productModelBindingSource;
             this.ProductGridView.Location = new System.Drawing.Point(0, 28);
+            this.ProductGridView.MultiSelect = false;
             this.ProductGridView.Name = "ProductGridView";
             this.ProductGridView.RowTemplate.Height = 25;
+            this.ProductGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.ProductGridView.Size = new System.Drawing.Size(528, 420);
             this.ProductGridView.TabIndex = 1;
-            // 
-            // productModelBindingSource
-            // 
-            this.productModelBindingSource.DataSource = typeof(FinaData.Models.ProductModel);
+            this.ProductGridView.VirtualMode = true;
             // 
             // codeDataGridViewTextBoxColumn
             // 
@@ -244,6 +250,10 @@
             this.priceDataGridViewTextBoxColumn.Name = "priceDataGridViewTextBoxColumn";
             this.priceDataGridViewTextBoxColumn.ReadOnly = true;
             // 
+            // productModelBindingSource
+            // 
+            this.productModelBindingSource.DataSource = typeof(FinaData.Models.ProductModel);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -258,6 +268,7 @@
             this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.groupModelBindingSource)).EndInit();
             this.toolStrip2.ResumeLayout(false);
             this.toolStrip2.PerformLayout();
             this.toolStrip3.ResumeLayout(false);
@@ -283,9 +294,10 @@
         private ToolStripButton DiagramBtn;
         private DataGridView ProductGridView;
         private BindingSource productModelBindingSource;
-        private TreeView GroupTreeView; 
+        private TreeView GroupTreeView;
         private DataGridViewTextBoxColumn codeDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn priceDataGridViewTextBoxColumn;
+        private BindingSource groupModelBindingSource;
     }
 }

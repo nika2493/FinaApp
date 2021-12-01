@@ -1,6 +1,6 @@
 ﻿namespace FinaApp
 {
-    partial class AddProductForm
+    partial class ProductForm
     {
         /// <summary>
         /// Required designer variable.
@@ -44,6 +44,8 @@
             this.countryModelBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.ProductCodeTextBox = new System.Windows.Forms.NumericUpDown();
             this.ProductPriceTextBox = new System.Windows.Forms.NumericUpDown();
+            this.AddCountryBtn = new System.Windows.Forms.Button();
+            this.RemoveCountryBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.countryModelBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ProductCodeTextBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ProductPriceTextBox)).BeginInit();
@@ -65,7 +67,7 @@
             this.SaveBtn.Name = "SaveBtn";
             this.SaveBtn.Size = new System.Drawing.Size(75, 23);
             this.SaveBtn.TabIndex = 1;
-            this.SaveBtn.Text = "დამატება";
+            this.SaveBtn.Text = "შენახვა";
             this.SaveBtn.UseVisualStyleBackColor = true;
             this.SaveBtn.Click += new System.EventHandler(this.SaveBtn_Click);
             // 
@@ -131,17 +133,23 @@
             // 
             // ProductStartDateTimePicker
             // 
+            this.ProductStartDateTimePicker.CustomFormat = "dd/MM/yyyy";
+            this.ProductStartDateTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.ProductStartDateTimePicker.Location = new System.Drawing.Point(12, 149);
             this.ProductStartDateTimePicker.Name = "ProductStartDateTimePicker";
-            this.ProductStartDateTimePicker.Size = new System.Drawing.Size(200, 23);
+            this.ProductStartDateTimePicker.Size = new System.Drawing.Size(151, 23);
             this.ProductStartDateTimePicker.TabIndex = 8;
+            this.ProductStartDateTimePicker.Value = new System.DateTime(2021, 12, 2, 1, 12, 42, 0);
             // 
             // ProductEndDateTimePicker
             // 
-            this.ProductEndDateTimePicker.Location = new System.Drawing.Point(218, 149);
+            this.ProductEndDateTimePicker.CustomFormat = "dd/MM/yyyy";
+            this.ProductEndDateTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.ProductEndDateTimePicker.Location = new System.Drawing.Point(259, 149);
             this.ProductEndDateTimePicker.Name = "ProductEndDateTimePicker";
-            this.ProductEndDateTimePicker.Size = new System.Drawing.Size(198, 23);
+            this.ProductEndDateTimePicker.Size = new System.Drawing.Size(157, 23);
             this.ProductEndDateTimePicker.TabIndex = 9;
+            this.ProductEndDateTimePicker.Value = new System.DateTime(2021, 12, 2, 0, 0, 0, 0);
             // 
             // ProductNameTextBox
             // 
@@ -157,7 +165,7 @@
             this.ProductCountryComboBox.FormattingEnabled = true;
             this.ProductCountryComboBox.Location = new System.Drawing.Point(169, 99);
             this.ProductCountryComboBox.Name = "ProductCountryComboBox";
-            this.ProductCountryComboBox.Size = new System.Drawing.Size(247, 23);
+            this.ProductCountryComboBox.Size = new System.Drawing.Size(187, 23);
             this.ProductCountryComboBox.TabIndex = 13;
             // 
             // countryModelBindingSource
@@ -167,6 +175,11 @@
             // ProductCodeTextBox
             // 
             this.ProductCodeTextBox.Location = new System.Drawing.Point(169, 12);
+            this.ProductCodeTextBox.Maximum = new decimal(new int[] {
+            1294967295,
+            0,
+            0,
+            0});
             this.ProductCodeTextBox.Name = "ProductCodeTextBox";
             this.ProductCodeTextBox.Size = new System.Drawing.Size(247, 23);
             this.ProductCodeTextBox.TabIndex = 14;
@@ -174,16 +187,55 @@
             // ProductPriceTextBox
             // 
             this.ProductPriceTextBox.Location = new System.Drawing.Point(169, 70);
+            this.ProductPriceTextBox.Maximum = new decimal(new int[] {
+            1000000,
+            0,
+            0,
+            0});
             this.ProductPriceTextBox.Name = "ProductPriceTextBox";
             this.ProductPriceTextBox.Size = new System.Drawing.Size(247, 23);
             this.ProductPriceTextBox.TabIndex = 15;
             // 
-            // AddProductForm
+            // AddCountryBtn
+            // 
+            this.AddCountryBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.AddCountryBtn.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.AddCountryBtn.BackgroundImage = global::FinaApp.Properties.Resources.AddIcon;
+            this.AddCountryBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.AddCountryBtn.Location = new System.Drawing.Point(392, 99);
+            this.AddCountryBtn.Name = "AddCountryBtn";
+            this.AddCountryBtn.Size = new System.Drawing.Size(24, 24);
+            this.AddCountryBtn.TabIndex = 16;
+            this.AddCountryBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.TextAboveImage;
+            this.AddCountryBtn.UseVisualStyleBackColor = true;
+            this.AddCountryBtn.Click += new System.EventHandler(this.AddCountryBtn_Click);
+            // 
+            // RemoveCountryBtn
+            // 
+            this.RemoveCountryBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.RemoveCountryBtn.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.RemoveCountryBtn.BackgroundImage = global::FinaApp.Properties.Resources.RemoveIcon;
+            this.RemoveCountryBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.RemoveCountryBtn.Location = new System.Drawing.Point(362, 99);
+            this.RemoveCountryBtn.Name = "RemoveCountryBtn";
+            this.RemoveCountryBtn.Size = new System.Drawing.Size(24, 24);
+            this.RemoveCountryBtn.TabIndex = 17;
+            this.RemoveCountryBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.TextAboveImage;
+            this.RemoveCountryBtn.UseVisualStyleBackColor = true;
+            this.RemoveCountryBtn.Click += new System.EventHandler(this.RemoveCountryBtn_Click);
+            // 
+            // ProductForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(428, 207);
             this.ControlBox = false;
+            this.Controls.Add(this.RemoveCountryBtn);
+            this.Controls.Add(this.AddCountryBtn);
             this.Controls.Add(this.ProductPriceTextBox);
             this.Controls.Add(this.ProductCodeTextBox);
             this.Controls.Add(this.ProductCountryComboBox);
@@ -201,7 +253,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "AddProductForm";
+            this.Name = "ProductForm";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "პროდუქციის დამატება";
@@ -230,5 +282,7 @@
         private NumericUpDown ProductCodeTextBox;
         private NumericUpDown ProductPriceTextBox;
         private BindingSource countryModelBindingSource;
+        private Button AddCountryBtn;
+        private Button RemoveCountryBtn;
     }
 }

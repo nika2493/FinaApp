@@ -29,7 +29,7 @@ namespace FinaData.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    ParentGroupId = table.Column<int>(type: "int", nullable: false)
+                    ParentGroupId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -38,8 +38,7 @@ namespace FinaData.Migrations
                         name: "FK_Groups_Groups_ParentGroupId",
                         column: x => x.ParentGroupId,
                         principalTable: "Groups",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -48,11 +47,12 @@ namespace FinaData.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ProductionCode = table.Column<int>(type: "int", nullable: false),
+                    Code = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Price = table.Column<double>(type: "float", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     CountryId = table.Column<int>(type: "int", nullable: false),
-                    StarDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    GroupId = table.Column<int>(type: "int", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -64,36 +64,13 @@ namespace FinaData.Migrations
                         principalTable: "Countries",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "GroupModelProductModel",
-                columns: table => new
-                {
-                    GroupsId = table.Column<int>(type: "int", nullable: false),
-                    ProductionId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_GroupModelProductModel", x => new { x.GroupsId, x.ProductionId });
                     table.ForeignKey(
-                        name: "FK_GroupModelProductModel_Groups_GroupsId",
-                        column: x => x.GroupsId,
+                        name: "FK_Production_Groups_GroupId",
+                        column: x => x.GroupId,
                         principalTable: "Groups",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_GroupModelProductModel_Production_ProductionId",
-                        column: x => x.ProductionId,
-                        principalTable: "Production",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_GroupModelProductModel_ProductionId",
-                table: "GroupModelProductModel",
-                column: "ProductionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Groups_ParentGroupId",
@@ -104,21 +81,23 @@ namespace FinaData.Migrations
                 name: "IX_Production_CountryId",
                 table: "Production",
                 column: "CountryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Production_GroupId",
+                table: "Production",
+                column: "GroupId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "GroupModelProductModel");
-
-            migrationBuilder.DropTable(
-                name: "Groups");
-
-            migrationBuilder.DropTable(
                 name: "Production");
 
             migrationBuilder.DropTable(
                 name: "Countries");
+
+            migrationBuilder.DropTable(
+                name: "Groups");
         }
     }
 }

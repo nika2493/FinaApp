@@ -20,11 +20,8 @@ public class ProductModel
     public string Name { get; set; }
     [Required]
     public decimal Price { get; set; }
-    [Required]
-    public CountryModel Country { get; set; }
-    [Required]
-    public List<GroupModel> Groups { get; set; }
-    public DateTime StarDate { get; set; }
+    public CountryModel? Country { get; set; }
+    public GroupModel? Group { get; set; }
+    public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
 }
-

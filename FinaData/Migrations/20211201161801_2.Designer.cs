@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FinaData.Migrations
 {
     [DbContext(typeof(ProductionDbContext))]
-    [Migration("20211129133153_2")]
+    [Migration("20211201161801_2")]
     partial class _2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -55,7 +55,7 @@ namespace FinaData.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("ParentGroupId")
+                    b.Property<int?>("ParentGroupId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -82,6 +82,9 @@ namespace FinaData.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("GroupId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -90,37 +93,23 @@ namespace FinaData.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<DateTime>("StarDate")
+                    b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CountryId");
 
+                    b.HasIndex("GroupId");
+
                     b.ToTable("Production");
-                });
-
-            modelBuilder.Entity("GroupModelProductModel", b =>
-                {
-                    b.Property<int>("GroupsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProductionId")
-                        .HasColumnType("int");
-
-                    b.HasKey("GroupsId", "ProductionId");
-
-                    b.HasIndex("ProductionId");
-
-                    b.ToTable("GroupModelProductModel");
                 });
 
             modelBuilder.Entity("FinaData.Models.GroupModel", b =>
                 {
                     b.HasOne("FinaData.Models.GroupModel", "ParentGroup")
-                        .WithMany("ChildGroups")
-                        .HasForeignKey("ParentGroupId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .WithMany()
+                        .HasForeignKey("ParentGroupId");
 
                     b.Navigation("ParentGroup");
                 });
@@ -133,27 +122,18 @@ namespace FinaData.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("FinaData.Models.GroupModel", "Group")
+                        .WithMany("Production")
+                        .HasForeignKey("GroupId");
+
                     b.Navigation("Country");
-                });
 
-            modelBuilder.Entity("GroupModelProductModel", b =>
-                {
-                    b.HasOne("FinaData.Models.GroupModel", null)
-                        .WithMany()
-                        .HasForeignKey("GroupsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("FinaData.Models.ProductModel", null)
-                        .WithMany()
-                        .HasForeignKey("ProductionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Group");
                 });
 
             modelBuilder.Entity("FinaData.Models.GroupModel", b =>
                 {
-                    b.Navigation("ChildGroups");
+                    b.Navigation("Production");
                 });
 #pragma warning restore 612, 618
         }

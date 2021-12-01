@@ -16,8 +16,6 @@ public class GroupModel
     [Required] 
     [StringLength(50)]
     public string Name { get; set; }
-    public int ParentGroupId { get; set; }
-    public GroupModel ParentGroup { get; set; }
-    public List<GroupModel> ChildGroups { get; set; } = new List<GroupModel>();
+    public GroupModel? ParentGroup { get; set; }
     public List<ProductModel> Production { get; set; } = new List<ProductModel>();
 }

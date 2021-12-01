@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FinaData.Migrations
 {
     [DbContext(typeof(ProductionDbContext))]
-    [Migration("20211129085124_1")]
-    partial class _1
+    [Migration("20211201174748_3")]
+    partial class _3
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -55,7 +55,7 @@ namespace FinaData.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("ParentGroupId")
+                    b.Property<int?>("ParentGroupId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -73,54 +73,43 @@ namespace FinaData.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("CountryId")
+                    b.Property<int>("Code")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CountryId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int?>("GroupId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("ProductionCode")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("StarDate")
+                    b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CountryId");
 
+                    b.HasIndex("GroupId");
+
                     b.ToTable("Production");
-                });
-
-            modelBuilder.Entity("GroupModelProductModel", b =>
-                {
-                    b.Property<int>("GroupsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProductionId")
-                        .HasColumnType("int");
-
-                    b.HasKey("GroupsId", "ProductionId");
-
-                    b.HasIndex("ProductionId");
-
-                    b.ToTable("GroupModelProductModel");
                 });
 
             modelBuilder.Entity("FinaData.Models.GroupModel", b =>
                 {
                     b.HasOne("FinaData.Models.GroupModel", "ParentGroup")
-                        .WithMany("ChildGroups")
-                        .HasForeignKey("ParentGroupId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .WithMany()
+                        .HasForeignKey("ParentGroupId");
 
                     b.Navigation("ParentGroup");
                 });
@@ -129,31 +118,20 @@ namespace FinaData.Migrations
                 {
                     b.HasOne("FinaData.Models.CountryModel", "Country")
                         .WithMany()
-                        .HasForeignKey("CountryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CountryId");
+
+                    b.HasOne("FinaData.Models.GroupModel", "Group")
+                        .WithMany("Production")
+                        .HasForeignKey("GroupId");
 
                     b.Navigation("Country");
-                });
 
-            modelBuilder.Entity("GroupModelProductModel", b =>
-                {
-                    b.HasOne("FinaData.Models.GroupModel", null)
-                        .WithMany()
-                        .HasForeignKey("GroupsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("FinaData.Models.ProductModel", null)
-                        .WithMany()
-                        .HasForeignKey("ProductionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Group");
                 });
 
             modelBuilder.Entity("FinaData.Models.GroupModel", b =>
                 {
-                    b.Navigation("ChildGroups");
+                    b.Navigation("Production");
                 });
 #pragma warning restore 612, 618
         }
