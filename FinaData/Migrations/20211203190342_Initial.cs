@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FinaData.Migrations
 {
-    public partial class _1 : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -42,7 +42,7 @@ namespace FinaData.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Production",
+                name: "Products",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -57,14 +57,14 @@ namespace FinaData.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Production", x => x.Id);
+                    table.PrimaryKey("PK_Products", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Production_Countries_CountryId",
+                        name: "FK_Products_Countries_CountryId",
                         column: x => x.CountryId,
                         principalTable: "Countries",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Production_Groups_GroupId",
+                        name: "FK_Products_Groups_GroupId",
                         column: x => x.GroupId,
                         principalTable: "Groups",
                         principalColumn: "Id");
@@ -76,20 +76,20 @@ namespace FinaData.Migrations
                 column: "ParentGroupId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Production_CountryId",
-                table: "Production",
+                name: "IX_Products_CountryId",
+                table: "Products",
                 column: "CountryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Production_GroupId",
-                table: "Production",
+                name: "IX_Products_GroupId",
+                table: "Products",
                 column: "GroupId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Production");
+                name: "Products");
 
             migrationBuilder.DropTable(
                 name: "Countries");
