@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FinaData.Migrations
 {
     [DbContext(typeof(ProductionDbContext))]
-    [Migration("20211201161801_2")]
-    partial class _2
+    [Migration("20211202225023_1")]
+    partial class _1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -76,7 +76,7 @@ namespace FinaData.Migrations
                     b.Property<int>("Code")
                         .HasColumnType("int");
 
-                    b.Property<int>("CountryId")
+                    b.Property<int?>("CountryId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("EndDate")
@@ -118,9 +118,7 @@ namespace FinaData.Migrations
                 {
                     b.HasOne("FinaData.Models.CountryModel", "Country")
                         .WithMany()
-                        .HasForeignKey("CountryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CountryId");
 
                     b.HasOne("FinaData.Models.GroupModel", "Group")
                         .WithMany("Production")

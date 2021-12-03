@@ -20,7 +20,7 @@ namespace FinaData.Data;
 
  
 
-        public DbSet<ProductModel> Production { get; set; }
+        public DbSet<ProductModel> Products { get; set; }
         public DbSet<GroupModel> Groups { get; set; }
         public DbSet<CountryModel> Countries { get; set; }
 

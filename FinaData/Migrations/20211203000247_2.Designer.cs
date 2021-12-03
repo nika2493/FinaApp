@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FinaData.Migrations
 {
     [DbContext(typeof(ProductionDbContext))]
-    [Migration("20211201174748_3")]
-    partial class _3
+    [Migration("20211203000247_2")]
+    partial class _2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -102,7 +102,7 @@ namespace FinaData.Migrations
 
                     b.HasIndex("GroupId");
 
-                    b.ToTable("Production");
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("FinaData.Models.GroupModel", b =>

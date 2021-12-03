@@ -100,7 +100,7 @@ namespace FinaData.Migrations
 
                     b.HasIndex("GroupId");
 
-                    b.ToTable("Production");
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("FinaData.Models.GroupModel", b =>

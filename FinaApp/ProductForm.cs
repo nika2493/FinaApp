@@ -16,13 +16,13 @@ namespace FinaApp;
 public partial class ProductForm : Form
 {
     private readonly ProductionDbContext _db;
-    private readonly ProductModel? _product;
+    private readonly ProductModel _product;
     public ProductForm(ProductionDbContext db, ProductModel product)
     {
         _db = db;
         _product = product;
-        InitializeComponent();
 
+        InitializeComponent();
 
         ProductCodeTextBox.Value = _product.Code;
         ProductNameTextBox.Text = _product.Name;
@@ -45,35 +45,31 @@ public partial class ProductForm : Form
 
     private void SaveBtn_Click(object sender, EventArgs e)
     {
-        if (_product != null)
+        _product.Code = (int)ProductCodeTextBox.Value;
+        _product.Name = (string)ProductNameTextBox.Text;
+        _product.Price = (decimal)ProductPriceTextBox.Value;
+        if (ProductCountryComboBox.SelectedItem == null && !string.IsNullOrEmpty(ProductCountryComboBox.Text) &&
+            _db.Countries.FirstOrDefault(x => x.Name == ProductCountryComboBox.Text) == null)
         {
-            _product.Code = (int)ProductCodeTextBox.Value;
-            _product.Name = (string)ProductNameTextBox.Text;
-            _product.Price = (decimal)ProductPriceTextBox.Value;
-            if (ProductCountryComboBox.SelectedItem == null && !string.IsNullOrEmpty(ProductCountryComboBox.Text) &&
-                _db.Countries.FirstOrDefault(x => x.Name == ProductCountryComboBox.Text) == null)
-            {
-                CountryModel countryModel = new() {Name = ProductCountryComboBox.Text.ToString()};
-                _db.Countries.Add(countryModel);
-                _db.SaveChanges();
-                ProductCountryComboBox.DataSource = _db.Countries.ToList();
-                ProductCountryComboBox.SelectedItem = countryModel;
-            }
-
-            _product.Country = ProductCountryComboBox.SelectedItem as CountryModel;
-            _product.StartDate = ProductStartDateTimePicker.Value;
-            _product.EndDate = ProductEndDateTimePicker.Value;
-
-            if (_db.Production.FirstOrDefault(x => x.Id == _product.Id) == null)
-            {
-                _db.Production.Add(_product);
-            }
-            else
-            {
-                _db.Production.Update(_product);
-            }
+            CountryModel countryModel = new() {Name = ProductCountryComboBox.Text.ToString()};
+            _db.Countries.Add(countryModel);
+            _db.SaveChanges();
+            ProductCountryComboBox.DataSource = _db.Countries.ToList();
+            ProductCountryComboBox.SelectedItem = countryModel;
         }
 
+        _product.Country = ProductCountryComboBox.SelectedItem as CountryModel;
+        _product.StartDate = ProductStartDateTimePicker.Value;
+        _product.EndDate = ProductEndDateTimePicker.Value;
+
+        if (_db.Products.FirstOrDefault(x => x.Id == _product.Id) == null)
+        {
+            _db.Products.Add(_product);
+        }
+        else
+        {
+            _db.Products.Update(_product);
+        }
         _db.SaveChanges();
         Close();
     }

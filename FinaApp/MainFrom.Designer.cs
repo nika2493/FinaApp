@@ -82,11 +82,12 @@
             this.GroupTreeView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.GroupTreeView.DataBindings.Add(new System.Windows.Forms.Binding("Tag", this.groupModelBindingSource, "Name", true));
+            this.GroupTreeView.DataBindings.Add(new System.Windows.Forms.Binding("Tag", this.groupModelBindingSource, "Id", true));
             this.GroupTreeView.Location = new System.Drawing.Point(0, 28);
             this.GroupTreeView.Name = "GroupTreeView";
             this.GroupTreeView.Size = new System.Drawing.Size(265, 420);
             this.GroupTreeView.TabIndex = 1;
+            this.GroupTreeView.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.GroupTreeView_NodeMouseClick);
             // 
             // groupModelBindingSource
             // 

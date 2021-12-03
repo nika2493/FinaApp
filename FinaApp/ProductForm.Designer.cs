@@ -53,7 +53,7 @@
             // 
             // CancelBtn
             // 
-            this.CancelBtn.Location = new System.Drawing.Point(88, 178);
+            this.CancelBtn.Location = new System.Drawing.Point(49, 178);
             this.CancelBtn.Name = "CancelBtn";
             this.CancelBtn.Size = new System.Drawing.Size(75, 23);
             this.CancelBtn.TabIndex = 0;
@@ -63,7 +63,7 @@
             // 
             // SaveBtn
             // 
-            this.SaveBtn.Location = new System.Drawing.Point(259, 178);
+            this.SaveBtn.Location = new System.Drawing.Point(299, 178);
             this.SaveBtn.Name = "SaveBtn";
             this.SaveBtn.Size = new System.Drawing.Size(75, 23);
             this.SaveBtn.TabIndex = 1;
@@ -156,7 +156,7 @@
             this.ProductNameTextBox.Location = new System.Drawing.Point(169, 41);
             this.ProductNameTextBox.Name = "ProductNameTextBox";
             this.ProductNameTextBox.Size = new System.Drawing.Size(247, 23);
-            this.ProductNameTextBox.TabIndex = 11;
+            this.ProductNameTextBox.TabIndex = 0;
             // 
             // ProductCountryComboBox
             // 
@@ -250,13 +250,13 @@
             this.Controls.Add(this.ProductCodeLable);
             this.Controls.Add(this.SaveBtn);
             this.Controls.Add(this.CancelBtn);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "ProductForm";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "პროდუქციის დამატება";
+            this.Text = "პროდუქტი";
             ((System.ComponentModel.ISupportInitialize)(this.countryModelBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ProductCodeTextBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ProductPriceTextBox)).EndInit();
