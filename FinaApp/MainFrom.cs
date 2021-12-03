@@ -13,7 +13,7 @@ public partial class MainForm : Form
     {
         InitializeComponent();
         UpdateTreeView();
-        RefreshDataGrid();
+        GroupTreeView.SelectedNode = null;
     }
 
     /// <summary>
@@ -24,6 +24,7 @@ public partial class MainForm : Form
     {
         return (ProductModel?) ProductGridView?.CurrentRow?.DataBoundItem;
     }
+
     private GroupModel? GetSelectedGroup()
     {
         return (GroupModel?) GroupTreeView?.SelectedNode?.Tag;
@@ -34,25 +35,42 @@ public partial class MainForm : Form
         return GroupTreeView?.SelectedNode;
     }
 
-    private void RefreshDataGrid()
+    private void UpdateDataGrid()
     {
-        ProductGridView.DataSource = GetSelectedGroup() == null ? _db.Products.ToList() : GetProductsFromSelectedGroup(GetSelectedGroup());
+        ProductGridView.DataSource = GetProductsFromSelectedGroup(GetSelectedGroup());
+        if(GetProductsFromSelectedGroup(GetSelectedGroup()).Count==0)
+        {
+            EditProductBtn.Enabled = false;
+            DeleteProductBtn.Enabled = false;
+            DiagramBtn.Enabled = false;
+        }
+        else
+        {
+            EditProductBtn.Enabled = true;
+            DeleteProductBtn.Enabled = true;
+            DiagramBtn.Enabled = true;
+        }
     }
 
-    private List<ProductModel> GetProductsFromSelectedGroup(GroupModel groupModel)
+    private List<ProductModel> GetProductsFromSelectedGroup(GroupModel? groupModel)
     {
         List<ProductModel> products =new();
-        foreach (GroupModel group in GetAllChildGroup(groupModel.Id))
+        foreach (GroupModel group in GetAllChildGroup(groupModel?.Id)!)
         {
             products.AddRange(GetProductsFromSelectedGroup(group));
         }
-        products.AddRange(groupModel.Production);
+
+        if (groupModel?.Production != null)
+        {
+            products.AddRange(groupModel?.Production!);
+        }
+
         return products;
     }
 
-    private List<GroupModel> GetAllChildGroup(int? parentId)
+    private List<GroupModel>? GetAllChildGroup(int? parentId)
     {
-        return _db.Groups
+        return _db.Groups.Include(gr=>gr.Production)
             .Include(gr => gr.ParentGroup)
             .Where(gr => (parentId == null && gr.ParentGroup == null)
                          || (gr.ParentGroup != null && gr.ParentGroup.Id == parentId)).ToList();
@@ -64,19 +82,32 @@ public partial class MainForm : Form
         PopulateTreeView(null,null);
         GroupTreeView.ExpandAll();
         GroupTreeView.SelectedNode=GroupTreeView.TopNode;
+        if(GroupTreeView.Nodes.Count==0)
+        {
+            EditGroupBtn.Enabled = false;
+            DeleteGroupBtn.Enabled = false;
+            AddProductBtn.Enabled = false;
+            DiagramBtn.Enabled = false;
+        }
+        else
+        {
+            EditGroupBtn.Enabled = true;
+            DeleteGroupBtn.Enabled = true;
+            AddProductBtn.Enabled = true;
+            DiagramBtn.Enabled = true;
+        }
+        UpdateDataGrid();
     }
+
     private void PopulateTreeView(int? parentId, TreeNode? parentNode)
     {
-        List<GroupModel> children = GetAllChildGroup(parentId);
+        List<GroupModel>? children = GetAllChildGroup(parentId);
 
-        foreach (GroupModel gr in children)
+        if (children == null) return;
+
+        foreach (GroupModel? gr in children)
         {
-            TreeNode? childNode = new() {
-                Text = gr.Name,
-                Name = gr.Id.ToString(),
-                Tag = gr
-            };
-
+            TreeNode? childNode = new() { Text = gr.Name, Name = gr.Id.ToString(), Tag = gr };
             if (parentNode == null)
             {
                 GroupTreeView.Nodes.Add(childNode);
@@ -89,6 +120,16 @@ public partial class MainForm : Form
         }
     }
 
+    /// <summary>
+    /// Diagram
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void DiagramBtn_Click(object sender, EventArgs e)
+    {
+        DiagramForm diagramForm = new(GetProductsFromSelectedGroup(GetSelectedGroup()));
+        diagramForm.ShowDialog();
+    }
 
     /// <summary>
     /// ProductGridView
@@ -100,7 +141,7 @@ public partial class MainForm : Form
         if(GetSelectedGroup()==null) return;
         ProductForm productForm = new(_db, new ProductModel() {StartDate = DateTime.Now, EndDate = DateTime.Now, Group = GetSelectedGroup()} );
         productForm.ShowDialog();
-        RefreshDataGrid();
+        UpdateDataGrid();
     }
 
     private void EditProductBtn_Click(object sender, EventArgs e)
@@ -109,10 +150,8 @@ public partial class MainForm : Form
         if (product == null) return;
         ProductForm productForm = new(_db, product);
         productForm.ShowDialog();
-        RefreshDataGrid();
+        UpdateDataGrid();
     }
-
-
 
     private void DeleteProductBtn_Click(object sender, EventArgs e)
     {
@@ -120,7 +159,7 @@ public partial class MainForm : Form
         if (product == null) return;
         _db.Products.Remove(product);
         _db.SaveChanges();
-        RefreshDataGrid();
+        UpdateDataGrid();
     }
 
 
@@ -135,6 +174,7 @@ public partial class MainForm : Form
         groupForm.ShowDialog();
         UpdateTreeView();
     }
+
     private void EditGroupBtn_Click(object sender, EventArgs e)
     {
         GroupModel? group = GetSelectedGroup();
@@ -143,6 +183,7 @@ public partial class MainForm : Form
         groupForm.ShowDialog();
         UpdateTreeView();
     }
+
     private void DeleteGroupBtn_Click(object sender, EventArgs e)
     {
         GroupModel? group = GetSelectedGroup();
@@ -155,7 +196,6 @@ public partial class MainForm : Form
                 _db.Groups.Update(gr);
             }
         }
-
         var list = _db.Products.Where(x => x.Group == group).ToList();
         _db.Products.RemoveRange(list);
         _db.Groups.Remove(group);
@@ -163,20 +203,9 @@ public partial class MainForm : Form
         UpdateTreeView();
     }
 
-
-    /// <summary>
-    /// Diagram
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    private void DiagramBtn_Click(object sender, EventArgs e)
-    {
-        DiagramForm diagramForm  = new(GetProductsFromSelectedGroup(GetSelectedGroup()));
-        diagramForm.ShowDialog();
-    }
-
     private void GroupTreeView_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
     {
-        ProductGridView.DataSource = GetProductsFromSelectedGroup((GroupModel)e.Node.Tag);
+        GroupTreeView.SelectedNode =e.Node;
+        UpdateDataGrid();
     }
 }

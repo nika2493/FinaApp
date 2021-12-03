@@ -23,8 +23,11 @@ public partial class ProductForm : Form
         _product = product;
 
         InitializeComponent();
-
-        ProductCodeTextBox.Value = _product.Code;
+        if (_product.Id == 0)
+        {
+            ProductCodeTextBox.Value = GetFreeCode();
+        }else
+            ProductCodeTextBox.Value = _product.Code;
         ProductNameTextBox.Text = _product.Name;
         ProductPriceTextBox.Value = _product.Price;
         ProductCountryComboBox.SelectedItem = _product.Country;
@@ -62,13 +65,13 @@ public partial class ProductForm : Form
         _product.StartDate = ProductStartDateTimePicker.Value;
         _product.EndDate = ProductEndDateTimePicker.Value;
 
-        if (_db.Products.FirstOrDefault(x => x.Id == _product.Id) == null)
+        if (_db.Products.Any(x => x.Id == _product.Id))
         {
-            _db.Products.Add(_product);
+            _db.Products.Update(_product);
         }
         else
         {
-            _db.Products.Update(_product);
+            _db.Products.Add(_product);
         }
         _db.SaveChanges();
         Close();
@@ -96,5 +99,29 @@ public partial class ProductForm : Form
         ProductCountryComboBox.DataSource = _db.Countries.ToList();
         if (ProductCountryComboBox.SelectedItem == null)
             ProductCountryComboBox.Text="";
+    }
+
+    private void AutoRadioButton_CheckedChanged(object sender, EventArgs e)
+    {
+        ProductCodeTextBox.Enabled = false;
+        ProductCodeTextBox.Value = GetFreeCode();
+    }
+
+
+    private void ManualRadioButton_CheckedChanged(object sender, EventArgs e)
+    {
+        ProductCodeTextBox.Enabled = true;
+    }
+
+    private int GetFreeCode()
+    {
+        int  freecode =0;
+        while(true)
+            if (_db.Products.Any(x => x.Code == freecode))
+            {
+                freecode = +1;
+            }
+            else return freecode;
+
     }
 }

@@ -46,6 +46,8 @@
             this.ProductPriceTextBox = new System.Windows.Forms.NumericUpDown();
             this.AddCountryBtn = new System.Windows.Forms.Button();
             this.RemoveCountryBtn = new System.Windows.Forms.Button();
+            this.AutoRadioButton = new System.Windows.Forms.RadioButton();
+            this.ManualRadioButton = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.countryModelBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ProductCodeTextBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ProductPriceTextBox)).BeginInit();
@@ -75,7 +77,7 @@
             // 
             this.ProductCodeLable.AutoSize = true;
             this.ProductCodeLable.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.ProductCodeLable.Location = new System.Drawing.Point(105, 14);
+            this.ProductCodeLable.Location = new System.Drawing.Point(227, 9);
             this.ProductCodeLable.Name = "ProductCodeLable";
             this.ProductCodeLable.Size = new System.Drawing.Size(58, 21);
             this.ProductCodeLable.TabIndex = 2;
@@ -174,18 +176,20 @@
             // 
             // ProductCodeTextBox
             // 
-            this.ProductCodeTextBox.Location = new System.Drawing.Point(169, 12);
+            this.ProductCodeTextBox.Enabled = false;
+            this.ProductCodeTextBox.Location = new System.Drawing.Point(291, 12);
             this.ProductCodeTextBox.Maximum = new decimal(new int[] {
             1294967295,
             0,
             0,
             0});
             this.ProductCodeTextBox.Name = "ProductCodeTextBox";
-            this.ProductCodeTextBox.Size = new System.Drawing.Size(247, 23);
+            this.ProductCodeTextBox.Size = new System.Drawing.Size(125, 23);
             this.ProductCodeTextBox.TabIndex = 14;
             // 
             // ProductPriceTextBox
             // 
+            this.ProductPriceTextBox.DecimalPlaces = 2;
             this.ProductPriceTextBox.Location = new System.Drawing.Point(169, 70);
             this.ProductPriceTextBox.Maximum = new decimal(new int[] {
             1000000,
@@ -228,12 +232,38 @@
             this.RemoveCountryBtn.UseVisualStyleBackColor = true;
             this.RemoveCountryBtn.Click += new System.EventHandler(this.RemoveCountryBtn_Click);
             // 
+            // AutoRadioButton
+            // 
+            this.AutoRadioButton.AutoSize = true;
+            this.AutoRadioButton.Checked = true;
+            this.AutoRadioButton.Location = new System.Drawing.Point(12, 12);
+            this.AutoRadioButton.Name = "AutoRadioButton";
+            this.AutoRadioButton.Size = new System.Drawing.Size(103, 19);
+            this.AutoRadioButton.TabIndex = 18;
+            this.AutoRadioButton.TabStop = true;
+            this.AutoRadioButton.Text = "ავტომატური";
+            this.AutoRadioButton.UseVisualStyleBackColor = true;
+            this.AutoRadioButton.CheckedChanged += new System.EventHandler(this.AutoRadioButton_CheckedChanged);
+            // 
+            // ManualRadioButton
+            // 
+            this.ManualRadioButton.AutoSize = true;
+            this.ManualRadioButton.Location = new System.Drawing.Point(121, 12);
+            this.ManualRadioButton.Name = "ManualRadioButton";
+            this.ManualRadioButton.Size = new System.Drawing.Size(100, 19);
+            this.ManualRadioButton.TabIndex = 19;
+            this.ManualRadioButton.Text = "მანუალური";
+            this.ManualRadioButton.UseVisualStyleBackColor = true;
+            this.ManualRadioButton.CheckedChanged += new System.EventHandler(this.ManualRadioButton_CheckedChanged);
+            // 
             // ProductForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(428, 207);
             this.ControlBox = false;
+            this.Controls.Add(this.ManualRadioButton);
+            this.Controls.Add(this.AutoRadioButton);
             this.Controls.Add(this.RemoveCountryBtn);
             this.Controls.Add(this.AddCountryBtn);
             this.Controls.Add(this.ProductPriceTextBox);
@@ -284,5 +314,7 @@
         private BindingSource countryModelBindingSource;
         private Button AddCountryBtn;
         private Button RemoveCountryBtn;
+        private RadioButton AutoRadioButton;
+        private RadioButton ManualRadioButton;
     }
 }

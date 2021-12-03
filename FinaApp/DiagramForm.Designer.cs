@@ -71,6 +71,7 @@ partial class DiagramForm
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(784, 561);
             this.Controls.Add(this.ProductDiagramDataGridView);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Name = "DiagramForm";
             this.Text = "დიაგრამა";
             ((System.ComponentModel.ISupportInitialize)(this.ProductDiagramDataGridView)).EndInit();

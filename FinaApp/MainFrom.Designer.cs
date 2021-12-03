@@ -32,11 +32,11 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.GroupTreeView = new System.Windows.Forms.TreeView();
             this.groupModelBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.toolStrip2 = new System.Windows.Forms.ToolStrip();
+            this.GrouopToolStrip = new System.Windows.Forms.ToolStrip();
             this.AddGroupBtn = new System.Windows.Forms.ToolStripButton();
             this.EditGroupBtn = new System.Windows.Forms.ToolStripButton();
             this.DeleteGroupBtn = new System.Windows.Forms.ToolStripButton();
-            this.toolStrip3 = new System.Windows.Forms.ToolStrip();
+            this.ProductToolStrip = new System.Windows.Forms.ToolStrip();
             this.AddProductBtn = new System.Windows.Forms.ToolStripButton();
             this.EditProductBtn = new System.Windows.Forms.ToolStripButton();
             this.DeleteProductBtn = new System.Windows.Forms.ToolStripButton();
@@ -52,8 +52,8 @@
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.groupModelBindingSource)).BeginInit();
-            this.toolStrip2.SuspendLayout();
-            this.toolStrip3.SuspendLayout();
+            this.GrouopToolStrip.SuspendLayout();
+            this.ProductToolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ProductGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.productModelBindingSource)).BeginInit();
             this.SuspendLayout();
@@ -67,11 +67,11 @@
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.Controls.Add(this.GroupTreeView);
-            this.splitContainer1.Panel1.Controls.Add(this.toolStrip2);
+            this.splitContainer1.Panel1.Controls.Add(this.GrouopToolStrip);
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.toolStrip3);
+            this.splitContainer1.Panel2.Controls.Add(this.ProductToolStrip);
             this.splitContainer1.Panel2.Controls.Add(this.ProductGridView);
             this.splitContainer1.Size = new System.Drawing.Size(800, 450);
             this.splitContainer1.SplitterDistance = 266;
@@ -93,17 +93,18 @@
             // 
             this.groupModelBindingSource.DataSource = typeof(FinaData.Models.GroupModel);
             // 
-            // toolStrip2
+            // GrouopToolStrip
             // 
-            this.toolStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.GrouopToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.AddGroupBtn,
             this.EditGroupBtn,
             this.DeleteGroupBtn});
-            this.toolStrip2.Location = new System.Drawing.Point(0, 0);
-            this.toolStrip2.Name = "toolStrip2";
-            this.toolStrip2.Size = new System.Drawing.Size(266, 25);
-            this.toolStrip2.TabIndex = 0;
-            this.toolStrip2.Text = "toolStrip2";
+            this.GrouopToolStrip.Location = new System.Drawing.Point(0, 0);
+            this.GrouopToolStrip.Name = "GrouopToolStrip";
+            this.GrouopToolStrip.Padding = new System.Windows.Forms.Padding(0);
+            this.GrouopToolStrip.Size = new System.Drawing.Size(266, 25);
+            this.GrouopToolStrip.TabIndex = 0;
+            this.GrouopToolStrip.Text = "GrouopToolStrip";
             // 
             // AddGroupBtn
             // 
@@ -136,19 +137,20 @@
             this.DeleteGroupBtn.ToolTipText = "ჯგუფი ს წაშლა";
             this.DeleteGroupBtn.Click += new System.EventHandler(this.DeleteGroupBtn_Click);
             // 
-            // toolStrip3
+            // ProductToolStrip
             // 
-            this.toolStrip3.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ProductToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.AddProductBtn,
             this.EditProductBtn,
             this.DeleteProductBtn,
             this.toolStripButton1,
             this.DiagramBtn});
-            this.toolStrip3.Location = new System.Drawing.Point(0, 0);
-            this.toolStrip3.Name = "toolStrip3";
-            this.toolStrip3.Size = new System.Drawing.Size(530, 25);
-            this.toolStrip3.TabIndex = 0;
-            this.toolStrip3.Text = "toolStrip3";
+            this.ProductToolStrip.Location = new System.Drawing.Point(0, 0);
+            this.ProductToolStrip.Name = "ProductToolStrip";
+            this.ProductToolStrip.Padding = new System.Windows.Forms.Padding(0);
+            this.ProductToolStrip.Size = new System.Drawing.Size(530, 25);
+            this.ProductToolStrip.TabIndex = 0;
+            this.ProductToolStrip.Text = "ProductToolStrip";
             // 
             // AddProductBtn
             // 
@@ -270,10 +272,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.groupModelBindingSource)).EndInit();
-            this.toolStrip2.ResumeLayout(false);
-            this.toolStrip2.PerformLayout();
-            this.toolStrip3.ResumeLayout(false);
-            this.toolStrip3.PerformLayout();
+            this.GrouopToolStrip.ResumeLayout(false);
+            this.GrouopToolStrip.PerformLayout();
+            this.ProductToolStrip.ResumeLayout(false);
+            this.ProductToolStrip.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ProductGridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.productModelBindingSource)).EndInit();
             this.ResumeLayout(false);
@@ -283,11 +285,11 @@
         #endregion
 
         private SplitContainer splitContainer1;
-        private ToolStrip toolStrip2;
+        private ToolStrip GrouopToolStrip;
         private ToolStripButton AddGroupBtn;
         private ToolStripButton EditGroupBtn;
         private ToolStripButton DeleteGroupBtn;
-        private ToolStrip toolStrip3;
+        private ToolStrip ProductToolStrip;
         private ToolStripButton AddProductBtn;
         private ToolStripButton EditProductBtn;
         private ToolStripButton DeleteProductBtn;
