@@ -141,7 +141,7 @@
             this.ProductStartDateTimePicker.Name = "ProductStartDateTimePicker";
             this.ProductStartDateTimePicker.Size = new System.Drawing.Size(151, 23);
             this.ProductStartDateTimePicker.TabIndex = 8;
-            this.ProductStartDateTimePicker.Value = new System.DateTime(2021, 12, 2, 1, 12, 42, 0);
+            this.ProductStartDateTimePicker.Value = new System.DateTime(2021, 12, 1, 0, 0, 0, 0);
             // 
             // ProductEndDateTimePicker
             // 
@@ -150,8 +150,8 @@
             this.ProductEndDateTimePicker.Location = new System.Drawing.Point(259, 149);
             this.ProductEndDateTimePicker.Name = "ProductEndDateTimePicker";
             this.ProductEndDateTimePicker.Size = new System.Drawing.Size(157, 23);
-            this.ProductEndDateTimePicker.TabIndex = 9;
-            this.ProductEndDateTimePicker.Value = new System.DateTime(2021, 12, 2, 0, 0, 0, 0);
+            this.ProductEndDateTimePicker.TabIndex = 8;
+            this.ProductEndDateTimePicker.Value = new System.DateTime(2021, 12, 10, 0, 0, 0, 0);
             // 
             // ProductNameTextBox
             // 
@@ -199,6 +199,7 @@
             this.ProductPriceTextBox.Name = "ProductPriceTextBox";
             this.ProductPriceTextBox.Size = new System.Drawing.Size(247, 23);
             this.ProductPriceTextBox.TabIndex = 15;
+            this.ProductPriceTextBox.Leave += new System.EventHandler(this.ProductPriceTextBox_Leave);
             // 
             // AddCountryBtn
             // 
@@ -235,12 +236,10 @@
             // AutoRadioButton
             // 
             this.AutoRadioButton.AutoSize = true;
-            this.AutoRadioButton.Checked = true;
             this.AutoRadioButton.Location = new System.Drawing.Point(12, 12);
             this.AutoRadioButton.Name = "AutoRadioButton";
             this.AutoRadioButton.Size = new System.Drawing.Size(103, 19);
             this.AutoRadioButton.TabIndex = 18;
-            this.AutoRadioButton.TabStop = true;
             this.AutoRadioButton.Text = "ავტომატური";
             this.AutoRadioButton.UseVisualStyleBackColor = true;
             this.AutoRadioButton.CheckedChanged += new System.EventHandler(this.AutoRadioButton_CheckedChanged);

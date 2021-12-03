@@ -17,28 +17,43 @@ public partial class ProductForm : Form
 {
     private readonly ProductionDbContext _db;
     private readonly ProductModel _product;
-    public ProductForm(ProductionDbContext db, ProductModel product)
+    private readonly bool _add;
+    private readonly int _inputCode;
+    private readonly string _inputName;
+
+
+#pragma warning disable CS8618
+    public ProductForm(ProductionDbContext db, ProductModel product, bool add)
+#pragma warning restore CS8618
     {
         _db = db;
         _product = product;
-
+        _add = add;
         InitializeComponent();
-        if (_product.Id == 0)
+        if (add)
         {
             ProductCodeTextBox.Value = GetFreeCode();
-        }else
+            AutoRadioButton.Checked = true;
+        }
+        else
+        {
+            _inputName = _product.Name;
+            _inputCode = _product.Code;
+            ManualRadioButton.Checked = true;
             ProductCodeTextBox.Value = _product.Code;
-        ProductNameTextBox.Text = _product.Name;
-        ProductPriceTextBox.Value = _product.Price;
-        ProductCountryComboBox.SelectedItem = _product.Country;
+            ProductNameTextBox.Text = _product.Name;
+            ProductPriceTextBox.Value = _product.Price;
+            ProductCountryComboBox.SelectedItem = _product.Country;
+        }
+
         ProductStartDateTimePicker.Value = _product.StartDate;
         ProductEndDateTimePicker.Value = _product.EndDate;
+
         ProductCountryComboBox.DataSource = _db.Countries.ToList();
         ProductCountryComboBox.DisplayMember = "Name";
         ProductCountryComboBox.ValueMember = "Id";
         if (_product?.Country != null)
             ProductCountryComboBox.SelectedValue = _product.Country.Id;
-        ProductCountryComboBox.Invalidate();
     }
 
     private void CancelBtn_Click(object sender, EventArgs e)
@@ -48,9 +63,6 @@ public partial class ProductForm : Form
 
     private void SaveBtn_Click(object sender, EventArgs e)
     {
-        _product.Code = (int)ProductCodeTextBox.Value;
-        _product.Name = (string)ProductNameTextBox.Text;
-        _product.Price = (decimal)ProductPriceTextBox.Value;
         if (ProductCountryComboBox.SelectedItem == null && !string.IsNullOrEmpty(ProductCountryComboBox.Text) &&
             _db.Countries.FirstOrDefault(x => x.Name == ProductCountryComboBox.Text) == null)
         {
@@ -60,18 +72,49 @@ public partial class ProductForm : Form
             ProductCountryComboBox.DataSource = _db.Countries.ToList();
             ProductCountryComboBox.SelectedItem = countryModel;
         }
-
         _product.Country = ProductCountryComboBox.SelectedItem as CountryModel;
+
+
+
+        if (CheckName(ProductNameTextBox.Text))
+        {
+            MessageBox.Show("პროდუქტი უკვე არსებობს", "შეცდომა!", MessageBoxButtons.OK);
+            return;
+        }
+        if (ProductStartDateTimePicker.Value > ProductEndDateTimePicker.Value)
+        {
+            MessageBox.Show("დაწყება/დასრულების თარიღი არასწორია", "შეცდომა!", MessageBoxButtons.OK);
+            return;
+        }
+        if(ProductPriceTextBox.Value<0.01m)
+        {
+            MessageBox.Show("ფასი არასწორია", "შეცდომა", MessageBoxButtons.OK);
+            return;
+        }
+        if (CheckCode((int)ProductCodeTextBox.Value))
+        {
+            MessageBox.Show((int)ProductCodeTextBox.Value + " კოდი უკვე გამოყენებულია", "შეცდომა!", MessageBoxButtons.OK);
+            AutoRadioButton.Checked=true;
+            return;
+        }
+        if (string.IsNullOrEmpty(ProductNameTextBox.Text))
+        {
+            MessageBox.Show("სავალდებულო ველი: დასახელება", "შეცდომა!", MessageBoxButtons.OK);
+            return;
+        }
         _product.StartDate = ProductStartDateTimePicker.Value;
         _product.EndDate = ProductEndDateTimePicker.Value;
-
-        if (_db.Products.Any(x => x.Id == _product.Id))
+        _product.Code = (int)ProductCodeTextBox.Value;
+        _product.Name = ProductNameTextBox.Text;
+        _product.Price = ProductPriceTextBox.Value+0.00m;
+        if (_add)
         {
-            _db.Products.Update(_product);
+            _db.Products.Add(_product);
+            
         }
         else
         {
-            _db.Products.Add(_product);
+            _db.Products.Update(_product);
         }
         _db.SaveChanges();
         Close();
@@ -103,8 +146,8 @@ public partial class ProductForm : Form
 
     private void AutoRadioButton_CheckedChanged(object sender, EventArgs e)
     {
-        ProductCodeTextBox.Enabled = false;
         ProductCodeTextBox.Value = GetFreeCode();
+        ProductCodeTextBox.Enabled = false;
     }
 
 
@@ -115,13 +158,40 @@ public partial class ProductForm : Form
 
     private int GetFreeCode()
     {
-        int  freecode =0;
-        while(true)
-            if (_db.Products.Any(x => x.Code == freecode))
-            {
-                freecode = +1;
-            }
-            else return freecode;
+        int freeCode = 1;
+        var codes = _db.Products.Select(x => x.Code).ToList();
+        codes.Sort();
+        if (!_add)
+            codes.Remove(_product.Code);
+        foreach (int code in codes)
+        {
+            freeCode = code + 1;
+            if (!codes.Contains(freeCode))
+                return freeCode;
+        }
+        return freeCode;
+    }
 
+    private bool CheckCode(int code)
+    {
+        var codes = _db.Products.Select(x => x.Code).ToList();
+        codes.Sort();
+        if (!_add && code == _inputCode) return false;
+        if (codes.Contains(code)) return true;
+        return false;
+    }
+
+    private bool CheckName(string name)
+    {
+        var names = _db.Products.Select(x => x.Name).ToList();
+        names.Sort();
+        if (!_add && name == _inputName) return false;
+        if (names.Contains(name)) return true;
+        return false;
+    }
+
+    private void ProductPriceTextBox_Leave(object sender, EventArgs e)
+    {
+        ProductPriceTextBox.Value += 0.00m;
     }
 }

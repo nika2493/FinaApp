@@ -1,4 +1,4 @@
-using System.Security.Cryptography.X509Certificates;
+﻿using System.Security.Cryptography.X509Certificates;
 using FinaData.Data;
 using FinaData.Models;
 using Microsoft.EntityFrameworkCore;
@@ -65,13 +65,13 @@ public partial class MainForm : Form
             products.AddRange(groupModel?.Production!);
         }
 
+        products.Sort((x, y) => x.Id.CompareTo(y.Id));
         return products;
     }
 
     private List<GroupModel>? GetAllChildGroup(int? parentId)
     {
-        return _db.Groups.Include(gr=>gr.Production)
-            .Include(gr => gr.ParentGroup)
+        return _db.Groups.Include(gr=>gr.Production).Include(gr => gr.ParentGroup)
             .Where(gr => (parentId == null && gr.ParentGroup == null)
                          || (gr.ParentGroup != null && gr.ParentGroup.Id == parentId)).ToList();
     }
@@ -128,6 +128,7 @@ public partial class MainForm : Form
     private void DiagramBtn_Click(object sender, EventArgs e)
     {
         DiagramForm diagramForm = new(GetProductsFromSelectedGroup(GetSelectedGroup()));
+        UpdateTreeView();
         diagramForm.ShowDialog();
     }
 
@@ -139,7 +140,7 @@ public partial class MainForm : Form
     private void AddProductBtn_Click(object sender, EventArgs e)
     {
         if(GetSelectedGroup()==null) return;
-        ProductForm productForm = new(_db, new ProductModel() {StartDate = DateTime.Now, EndDate = DateTime.Now, Group = GetSelectedGroup()} );
+        ProductForm productForm = new(_db, new ProductModel() {StartDate = DateTime.Today, EndDate = DateTime.Today, Group = GetSelectedGroup()}, true );
         productForm.ShowDialog();
         UpdateDataGrid();
     }
@@ -148,7 +149,7 @@ public partial class MainForm : Form
     {
         ProductModel? product = GetSelectedProduct();
         if (product == null) return;
-        ProductForm productForm = new(_db, product);
+        ProductForm productForm = new(_db, product, false);
         productForm.ShowDialog();
         UpdateDataGrid();
     }
@@ -157,6 +158,8 @@ public partial class MainForm : Form
     {
         ProductModel? product = GetSelectedProduct();
         if (product == null) return;
+        DialogResult result = MessageBox.Show("გსურთ პროდუქტის წაშლა?", "გაფრთხილება!", MessageBoxButtons.YesNo);
+        if (result == DialogResult.No) return;
         _db.Products.Remove(product);
         _db.SaveChanges();
         UpdateDataGrid();
@@ -170,7 +173,7 @@ public partial class MainForm : Form
     /// <param name="e"></param>
     private void AddGroupBtn_Click(object sender, EventArgs e)
     {
-        GroupForm groupForm = new(_db, GetSelectedGroup(),true);
+        GroupForm groupForm = new(_db, GetSelectedGroup()!,true);
         groupForm.ShowDialog();
         UpdateTreeView();
     }
@@ -188,9 +191,27 @@ public partial class MainForm : Form
     {
         GroupModel? group = GetSelectedGroup();
         if (group == null) return;
+        var result = MessageBox.Show("გსურთ კატეგორიის და შემავალი პროდუქციის წაშლა?", "გაფრთხილება!", MessageBoxButtons.YesNo);
+        if (result == DialogResult.No ) return;
+        if (_db.Groups.Any(x => x.ParentGroup == group))
+        {
+            result = MessageBox.Show("კატეგორია შეიცავს ქვე კატეგორიებს გსურთ მათი წაშლა?", "გაფრთხილება!", MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes)
+            {
+                List<GroupModel>? groups = GetAllChildGroup(group.Id);
+                groups?.Add(group);
+                _db.Groups.RemoveRange(groups!);
+                List<ProductModel> products = GetProductsFromSelectedGroup(GetSelectedGroup());
+                _db.Products.RemoveRange(products);
+                _db.SaveChanges();
+                UpdateTreeView();
+                return;
+            }
+        }
+
         foreach (GroupModel gr in _db.Groups)
         {
-            if (gr.ParentGroup != null&&gr.ParentGroup.Id == group.Id)
+            if (gr.ParentGroup != null && gr.ParentGroup.Id == group.Id)
             {
                 gr.ParentGroup = group.ParentGroup;
                 _db.Groups.Update(gr);

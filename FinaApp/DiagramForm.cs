@@ -14,28 +14,30 @@ namespace FinaApp;
 public partial class DiagramForm : Form
 {
     private readonly List<ProductModel> _products;
+    private readonly DateTime _minDate;
+    private readonly DateTime _maxDate;
     public DiagramForm(List<ProductModel> products)
     {
         _products = products;
+        _minDate = GetMinDateFromList(_products);
+        _maxDate = GetMaxDateFromList(_products);
         InitializeComponent();
-        DateTime minDate = GetMinDateFromList(_products);
-        DateTime maxDate = GetMaxDateFromList(_products);
-        int timeSpan = (maxDate - minDate).Days+1;
+        ProductDiagramDataGridView.Columns.Add("product", "პროდუქტი");
 
-        ProductDiagramDataGridView.Columns.Add("product", "პროდუცტი");
-        while (minDate<=maxDate)
+
+        while (_minDate<=_maxDate)
         {
-            string columnName = minDate.Date.ToString("dd/MM/yyyy");
+            string columnName = _minDate.Date.ToString("dd/MM/yyyy");
             ProductDiagramDataGridView.Columns.Add(columnName, columnName);
-            minDate=minDate.AddDays(1);
+            _minDate=_minDate.AddDays(1);
         }
-        minDate = GetMinDateFromList(_products);
-        maxDate = GetMaxDateFromList(_products);
+        _minDate = GetMinDateFromList(_products);
+        _maxDate = GetMaxDateFromList(_products);
         int i = 0;
         foreach (ProductModel product in _products)
         {
             var productLifeCycle = (product.EndDate - product.StartDate).Days+1;
-            var startColumnIndex = (product.StartDate - minDate).Days;
+            var startColumnIndex = (product.StartDate - _minDate).Days;
             ProductDiagramDataGridView.Rows.Add(product.Name);
             while (productLifeCycle>0)
             {
@@ -44,6 +46,7 @@ public partial class DiagramForm : Form
             }
             i++;
         }
+
     }
 
     private DateTime GetMaxDateFromList(IReadOnlyCollection<ProductModel> products)
@@ -55,7 +58,6 @@ public partial class DiagramForm : Form
         }
         return result;
     }
-
     private DateTime GetMinDateFromList(IReadOnlyCollection<ProductModel> products)
     {
         DateTime result = products.FirstOrDefault()!.StartDate;
