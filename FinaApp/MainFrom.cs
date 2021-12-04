@@ -1,4 +1,4 @@
-﻿using System.Security.Cryptography.X509Certificates;
+﻿using FinaApp.Services.Abstraction;
 using FinaData.Data;
 using FinaData.Models;
 using Microsoft.EntityFrameworkCore;
@@ -7,10 +7,12 @@ namespace FinaApp;
 
 public partial class MainForm : Form
 {
-    private readonly ProductionDbContext _db = new();
-
-    public MainForm()
+    private readonly ProductionDbContext _db;
+    private readonly IProductionService _productionService;
+    public MainForm(ProductionDbContext context, IProductionService productionService)
     {
+        _productionService = productionService;
+        _db = context;
         InitializeComponent();
         UpdateTreeView();
         GroupTreeView.SelectedNode = null;
@@ -37,8 +39,8 @@ public partial class MainForm : Form
 
     private void UpdateDataGrid()
     {
-        ProductGridView.DataSource = GetProductsFromSelectedGroup(GetSelectedGroup());
-        if(GetProductsFromSelectedGroup(GetSelectedGroup()).Count==0)
+        ProductGridView.DataSource = GetProductsFromGroup(GetSelectedGroup());
+        if(GetProductsFromGroup(GetSelectedGroup()).Count==0)
         {
             EditProductBtn.Enabled = false;
             DeleteProductBtn.Enabled = false;
@@ -52,12 +54,12 @@ public partial class MainForm : Form
         }
     }
 
-    private List<ProductModel> GetProductsFromSelectedGroup(GroupModel? groupModel)
+    private List<ProductModel> GetProductsFromGroup(GroupModel? groupModel)
     {
         List<ProductModel> products =new();
         foreach (GroupModel group in GetAllChildGroup(groupModel?.Id)!)
         {
-            products.AddRange(GetProductsFromSelectedGroup(group));
+            products.AddRange(GetProductsFromGroup(group));
         }
 
         if (groupModel?.Production != null)
@@ -127,7 +129,7 @@ public partial class MainForm : Form
     /// <param name="e"></param>
     private void DiagramBtn_Click(object sender, EventArgs e)
     {
-        DiagramForm diagramForm = new(GetProductsFromSelectedGroup(GetSelectedGroup()));
+        DiagramForm diagramForm = new(GetProductsFromGroup(GetSelectedGroup()));
         UpdateTreeView();
         diagramForm.ShowDialog();
     }
@@ -154,14 +156,13 @@ public partial class MainForm : Form
         UpdateDataGrid();
     }
 
-    private void DeleteProductBtn_Click(object sender, EventArgs e)
+    private async void DeleteProductBtn_Click(object sender, EventArgs e)
     {
         ProductModel? product = GetSelectedProduct();
         if (product == null) return;
         DialogResult result = MessageBox.Show("გსურთ პროდუქტის წაშლა?", "გაფრთხილება!", MessageBoxButtons.YesNo);
         if (result == DialogResult.No) return;
-        _db.Products.Remove(product);
-        _db.SaveChanges();
+        await _productionService.DeleteProductAsync(product);
         UpdateDataGrid();
     }
 
@@ -201,7 +202,7 @@ public partial class MainForm : Form
                 List<GroupModel>? groups = GetAllChildGroup(group.Id);
                 groups?.Add(group);
                 _db.Groups.RemoveRange(groups!);
-                List<ProductModel> products = GetProductsFromSelectedGroup(GetSelectedGroup());
+                List<ProductModel> products = GetProductsFromGroup(GetSelectedGroup());
                 _db.Products.RemoveRange(products);
                 _db.SaveChanges();
                 UpdateTreeView();
@@ -226,7 +227,7 @@ public partial class MainForm : Form
 
     private void GroupTreeView_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
     {
-        GroupTreeView.SelectedNode =e.Node;
+        GroupTreeView.SelectedNode = e.Node;
         UpdateDataGrid();
     }
 }

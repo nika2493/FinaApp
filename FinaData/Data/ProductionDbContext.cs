@@ -10,15 +10,10 @@ namespace FinaData.Data;
 
     public class ProductionDbContext : DbContext
     {
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            //optionsBuilder.UseLazyLoadingProxies();
-            optionsBuilder.UseSqlServer(
-                "Data Source = localhost; Initial Catalog = Production; Integrated Security = True;");
-            base.OnConfiguring(optionsBuilder);
-        }
+        public ProductionDbContext(DbContextOptions<ProductionDbContext> options) : base(options) { }
 
- 
+
+
 
         public DbSet<ProductModel> Products { get; set; }
         public DbSet<GroupModel> Groups { get; set; }

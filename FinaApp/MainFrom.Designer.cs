@@ -83,6 +83,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.GroupTreeView.DataBindings.Add(new System.Windows.Forms.Binding("Tag", this.groupModelBindingSource, "Id", true));
+            this.GroupTreeView.HideSelection = false;
             this.GroupTreeView.Location = new System.Drawing.Point(0, 28);
             this.GroupTreeView.Name = "GroupTreeView";
             this.GroupTreeView.ShowRootLines = false;
