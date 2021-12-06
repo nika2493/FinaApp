@@ -1,4 +1,4 @@
-﻿namespace FinaApp
+﻿namespace FinaDesktop
 {
     partial class ProductForm
     {
@@ -207,7 +207,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.AddCountryBtn.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.AddCountryBtn.BackgroundImage = global::FinaApp.Properties.Resources.AddIcon;
+            this.AddCountryBtn.BackgroundImage = global::FinaDesktop.Properties.Resources.AddIcon;
             this.AddCountryBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.AddCountryBtn.Location = new System.Drawing.Point(392, 99);
             this.AddCountryBtn.Name = "AddCountryBtn";
@@ -223,7 +223,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.RemoveCountryBtn.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.RemoveCountryBtn.BackgroundImage = global::FinaApp.Properties.Resources.RemoveIcon;
+            this.RemoveCountryBtn.BackgroundImage = global::FinaDesktop.Properties.Resources.RemoveIcon;
             this.RemoveCountryBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.RemoveCountryBtn.Location = new System.Drawing.Point(362, 99);
             this.RemoveCountryBtn.Name = "RemoveCountryBtn";

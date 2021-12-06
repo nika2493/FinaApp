@@ -7,21 +7,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using FinaApp.Services.Abstraction;
 using FinaData.Data;
 using FinaData.Models;
 
-namespace FinaApp;
+namespace FinaDesktop;
 public partial class GroupForm : Form
 {
-    private readonly ProductionDbContext _db;
+    private readonly IProductionService _productionService;
     private readonly GroupModel _group;
     private readonly bool _add;
     private readonly string _inputName;
 #pragma warning disable CS8618
-    public GroupForm(ProductionDbContext db, GroupModel group, bool add)
+    public GroupForm(IProductionService productionService, GroupModel group, bool add)
 #pragma warning restore CS8618
     {
-        _db = db;
+        _productionService = productionService;
         _group = group;
         _add = add;
         InitializeComponent();
@@ -48,7 +49,7 @@ public partial class GroupForm : Form
         Close();
     }
 
-    private void SaveBtn_Click(object sender, EventArgs e)
+    private  void SaveBtn_Click(object sender, EventArgs e)
     {
         if (string.IsNullOrEmpty(GroupTextBox.Text))
         {
@@ -67,18 +68,17 @@ public partial class GroupForm : Form
         _group.Name = GroupTextBox.Text;
         if (_add)
         {
-            _db.Groups.Add(_group);
+           _productionService.CreateGroup(_group);
         }
         else
         {
-            _db.Groups.Update(_group);
+           _productionService.UpdateGroup(_group);
         }
-        _db.SaveChanges();
         Close();
     }
     private bool CheckName(string name)
     {
-        var names = _db.Groups.Select(x => x.Name).ToList();
+        List<string> names = _productionService.GetAllGroupNames();
         names.Sort();
         if (!_add && name == _inputName) return false;
         if (names.Contains(name)) return true;

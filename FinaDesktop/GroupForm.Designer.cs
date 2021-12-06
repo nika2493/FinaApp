@@ -1,4 +1,4 @@
-﻿namespace FinaApp;
+﻿namespace FinaDesktop;
 
 partial class GroupForm
 {

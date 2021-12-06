@@ -1,4 +1,4 @@
-﻿namespace FinaApp
+﻿namespace FinaDesktop
 {
     partial class MainForm
     {
@@ -111,7 +111,7 @@
             // AddGroupBtn
             // 
             this.AddGroupBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.AddGroupBtn.Image = global::FinaApp.Properties.Resources.AddIcon;
+            this.AddGroupBtn.Image = global::FinaDesktop.Properties.Resources.AddIcon;
             this.AddGroupBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.AddGroupBtn.Name = "AddGroupBtn";
             this.AddGroupBtn.Size = new System.Drawing.Size(23, 22);
@@ -121,7 +121,7 @@
             // EditGroupBtn
             // 
             this.EditGroupBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.EditGroupBtn.Image = global::FinaApp.Properties.Resources.EditIcon;
+            this.EditGroupBtn.Image = global::FinaDesktop.Properties.Resources.EditIcon;
             this.EditGroupBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.EditGroupBtn.Name = "EditGroupBtn";
             this.EditGroupBtn.Size = new System.Drawing.Size(23, 22);
@@ -131,7 +131,7 @@
             // DeleteGroupBtn
             // 
             this.DeleteGroupBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.DeleteGroupBtn.Image = global::FinaApp.Properties.Resources.RemoveIcon;
+            this.DeleteGroupBtn.Image = global::FinaDesktop.Properties.Resources.RemoveIcon;
             this.DeleteGroupBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.DeleteGroupBtn.Name = "DeleteGroupBtn";
             this.DeleteGroupBtn.Size = new System.Drawing.Size(23, 22);
@@ -157,7 +157,7 @@
             // AddProductBtn
             // 
             this.AddProductBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.AddProductBtn.Image = global::FinaApp.Properties.Resources.AddIcon;
+            this.AddProductBtn.Image = global::FinaDesktop.Properties.Resources.AddIcon;
             this.AddProductBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.AddProductBtn.Name = "AddProductBtn";
             this.AddProductBtn.Size = new System.Drawing.Size(23, 22);
@@ -167,7 +167,7 @@
             // EditProductBtn
             // 
             this.EditProductBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.EditProductBtn.Image = global::FinaApp.Properties.Resources.EditIcon;
+            this.EditProductBtn.Image = global::FinaDesktop.Properties.Resources.EditIcon;
             this.EditProductBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.EditProductBtn.Name = "EditProductBtn";
             this.EditProductBtn.Size = new System.Drawing.Size(23, 22);
@@ -177,7 +177,7 @@
             // DeleteProductBtn
             // 
             this.DeleteProductBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.DeleteProductBtn.Image = global::FinaApp.Properties.Resources.RemoveIcon;
+            this.DeleteProductBtn.Image = global::FinaDesktop.Properties.Resources.RemoveIcon;
             this.DeleteProductBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.DeleteProductBtn.Name = "DeleteProductBtn";
             this.DeleteProductBtn.Size = new System.Drawing.Size(23, 22);
@@ -188,7 +188,7 @@
             // 
             this.toolStripButton1.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton1.Image = global::FinaApp.Properties.Resources.ForwardIcon;
+            this.toolStripButton1.Image = global::FinaDesktop.Properties.Resources.ForwardIcon;
             this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton1.Name = "toolStripButton1";
             this.toolStripButton1.Size = new System.Drawing.Size(23, 22);

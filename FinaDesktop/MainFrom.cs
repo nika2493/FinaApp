@@ -1,27 +1,20 @@
 ﻿using FinaApp.Services.Abstraction;
-using FinaData.Data;
 using FinaData.Models;
-using Microsoft.EntityFrameworkCore;
 
-namespace FinaApp;
+namespace FinaDesktop;
 
 public partial class MainForm : Form
 {
-    private readonly ProductionDbContext _db;
     private readonly IProductionService _productionService;
-    public MainForm(ProductionDbContext context, IProductionService productionService)
+    public MainForm(IProductionService productionService)
     {
         _productionService = productionService;
-        _db = context;
         InitializeComponent();
         UpdateTreeView();
         GroupTreeView.SelectedNode = null;
     }
 
-    /// <summary>
-    /// Utility
-    /// </summary>
-    /// <returns></returns>
+    // Utility
     private ProductModel? GetSelectedProduct()
     {
         return (ProductModel?) ProductGridView?.CurrentRow?.DataBoundItem;
@@ -30,11 +23,6 @@ public partial class MainForm : Form
     private GroupModel? GetSelectedGroup()
     {
         return (GroupModel?) GroupTreeView?.SelectedNode?.Tag;
-    }
-
-    private TreeNode? GetSelectedNode()
-    {
-        return GroupTreeView?.SelectedNode;
     }
 
     private void UpdateDataGrid()
@@ -57,10 +45,11 @@ public partial class MainForm : Form
     private List<ProductModel> GetProductsFromGroup(GroupModel? groupModel)
     {
         List<ProductModel> products =new();
-        foreach (GroupModel group in GetAllChildGroup(groupModel?.Id)!)
-        {
-            products.AddRange(GetProductsFromGroup(group));
-        }
+        if (groupModel != null) 
+            foreach (GroupModel group in _productionService.GetAllChildGroupById(groupModel.Id))
+            {
+                products.AddRange(GetProductsFromGroup(group));
+            }
 
         if (groupModel?.Production != null)
         {
@@ -71,12 +60,6 @@ public partial class MainForm : Form
         return products;
     }
 
-    private List<GroupModel>? GetAllChildGroup(int? parentId)
-    {
-        return _db.Groups.Include(gr=>gr.Production).Include(gr => gr.ParentGroup)
-            .Where(gr => (parentId == null && gr.ParentGroup == null)
-                         || (gr.ParentGroup != null && gr.ParentGroup.Id == parentId)).ToList();
-    }
 
     private void UpdateTreeView()
     {
@@ -103,9 +86,9 @@ public partial class MainForm : Form
 
     private void PopulateTreeView(int? parentId, TreeNode? parentNode)
     {
-        List<GroupModel>? children = GetAllChildGroup(parentId);
+        List<GroupModel>? children = _productionService.GetAllChildGroupById(parentId);
 
-        if (children == null) return;
+        //if (children == null) return;
 
         foreach (GroupModel? gr in children)
         {
@@ -122,27 +105,20 @@ public partial class MainForm : Form
         }
     }
 
-    /// <summary>
-    /// Diagram
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
+
+    // Diagram
     private void DiagramBtn_Click(object sender, EventArgs e)
     {
         DiagramForm diagramForm = new(GetProductsFromGroup(GetSelectedGroup()));
-        UpdateTreeView();
         diagramForm.ShowDialog();
     }
 
-    /// <summary>
-    /// ProductGridView
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
+
+    // ProductGridView
     private void AddProductBtn_Click(object sender, EventArgs e)
     {
         if(GetSelectedGroup()==null) return;
-        ProductForm productForm = new(_db, new ProductModel() {StartDate = DateTime.Today, EndDate = DateTime.Today, Group = GetSelectedGroup()}, true );
+        ProductForm productForm = new(_productionService, new ProductModel() {StartDate = DateTime.Today, EndDate = DateTime.Today, Group = GetSelectedGroup()}, true );
         productForm.ShowDialog();
         UpdateDataGrid();
     }
@@ -151,30 +127,26 @@ public partial class MainForm : Form
     {
         ProductModel? product = GetSelectedProduct();
         if (product == null) return;
-        ProductForm productForm = new(_db, product, false);
+        ProductForm productForm = new(_productionService, product, false);
         productForm.ShowDialog();
         UpdateDataGrid();
     }
 
-    private async void DeleteProductBtn_Click(object sender, EventArgs e)
+    private  void DeleteProductBtn_Click(object sender, EventArgs e)
     {
         ProductModel? product = GetSelectedProduct();
         if (product == null) return;
         DialogResult result = MessageBox.Show("გსურთ პროდუქტის წაშლა?", "გაფრთხილება!", MessageBoxButtons.YesNo);
         if (result == DialogResult.No) return;
-        await _productionService.DeleteProductAsync(product);
+        _productionService.DeleteProduct(product);
         UpdateDataGrid();
     }
 
 
-    /// <summary>
-    /// GroupTreeView
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
+    // GroupTreeView
     private void AddGroupBtn_Click(object sender, EventArgs e)
     {
-        GroupForm groupForm = new(_db, GetSelectedGroup()!,true);
+        GroupForm groupForm = new(_productionService, GetSelectedGroup()!,true);
         groupForm.ShowDialog();
         UpdateTreeView();
     }
@@ -183,45 +155,44 @@ public partial class MainForm : Form
     {
         GroupModel? group = GetSelectedGroup();
         if (group == null) return;
-        GroupForm groupForm = new(_db, group, false);
+        GroupForm groupForm = new(_productionService, group, false);
         groupForm.ShowDialog();
         UpdateTreeView();
     }
 
-    private void DeleteGroupBtn_Click(object sender, EventArgs e)
+    private  void DeleteGroupBtn_Click(object sender, EventArgs e)
     {
         GroupModel? group = GetSelectedGroup();
         if (group == null) return;
         var result = MessageBox.Show("გსურთ კატეგორიის და შემავალი პროდუქციის წაშლა?", "გაფრთხილება!", MessageBoxButtons.YesNo);
         if (result == DialogResult.No ) return;
-        if (_db.Groups.Any(x => x.ParentGroup == group))
+        if (_productionService.GroupHasChildGroup(group))
         {
             result = MessageBox.Show("კატეგორია შეიცავს ქვე კატეგორიებს გსურთ მათი წაშლა?", "გაფრთხილება!", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
             {
-                List<GroupModel>? groups = GetAllChildGroup(group.Id);
+                List<GroupModel>? groups = _productionService.GetAllChildGroupById(group.Id);
                 groups?.Add(group);
-                _db.Groups.RemoveRange(groups!);
+                _productionService.DeleteGroupRange(groups!);
                 List<ProductModel> products = GetProductsFromGroup(GetSelectedGroup());
-                _db.Products.RemoveRange(products);
-                _db.SaveChanges();
+                _productionService.DeleteProductRange(products);
                 UpdateTreeView();
                 return;
             }
         }
 
-        foreach (GroupModel gr in _db.Groups)
+        foreach (GroupModel gr in _productionService.GetAllGroup())
         {
             if (gr.ParentGroup != null && gr.ParentGroup.Id == group.Id)
             {
                 gr.ParentGroup = group.ParentGroup;
-                _db.Groups.Update(gr);
+                _productionService.UpdateGroup(gr);
             }
         }
-        var list = _db.Products.Where(x => x.Group == group).ToList();
-        _db.Products.RemoveRange(list);
-        _db.Groups.Remove(group);
-        _db.SaveChanges();
+
+        var list = _productionService.GetProductsByGroup(group);
+        _productionService.DeleteProductRange(list);
+        _productionService.DeleteGroup(group);
         UpdateTreeView();
     }
 

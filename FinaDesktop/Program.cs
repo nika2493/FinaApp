@@ -4,7 +4,7 @@ using FinaData.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace FinaApp;
+namespace FinaDesktop;
 
 internal static class Program
 {
@@ -16,19 +16,16 @@ internal static class Program
     {
         ApplicationConfiguration.Initialize();
 
-        var services = new ServiceCollection();
+        ServiceCollection services = new ServiceCollection();
         
         ConfigureServices(services);
 
-        using (ServiceProvider provider = services.BuildServiceProvider())
-        {
-            var mainForm = provider.GetRequiredService<MainForm>();
-            Application.Run(mainForm);
-        }
-
+        using ServiceProvider provider = services.BuildServiceProvider();
+        MainForm mainForm = provider.GetRequiredService<MainForm>();
+        Application.Run(mainForm);
     }   
 
-    private static void ConfigureServices(ServiceCollection services)
+    private static void ConfigureServices(IServiceCollection services)
     {
         services.AddScoped<MainForm>();
         services.AddDbContext<ProductionDbContext>(options =>

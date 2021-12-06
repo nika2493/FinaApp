@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using FinaData.Models;
 
-namespace FinaApp;
+namespace FinaDesktop;
 public partial class DiagramForm : Form
 {
     private readonly List<ProductModel> _products;
