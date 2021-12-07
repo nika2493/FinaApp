@@ -112,6 +112,34 @@ public class ProductionService : IProductionService
         _db.SaveChanges();
     }
     //Utility
+    public List<GroupModel> GetSelectedTree(GroupModel selectedGroup)
+    {
+        List<GroupModel> result = new();
+        foreach (GroupModel group in GetAllGroup())
+        {
+            if(PathExists(selectedGroup,group))
+                result.Add(group);
+        }
+        result.Add(selectedGroup);
+        return result;
+    }
+
+    private bool PathExists(GroupModel selectedGroup, GroupModel? group)
+    {
+        if (MoveUpTree(group)==null) return false;
+        if (MoveUpTree(group) == selectedGroup) return true;
+        if (MoveUpTree(group) != selectedGroup)
+        {
+            return PathExists(selectedGroup, MoveUpTree(group));
+        }
+        return false;
+    }
+
+    private GroupModel? MoveUpTree(GroupModel? group)
+    {
+        return group?.ParentGroup;
+    }
+
     public List<GroupModel> GetAllChildGroupById(int? id)
     {
         return _db.Groups.Include(gr => gr.Production).Include(gr => gr.ParentGroup)

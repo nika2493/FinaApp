@@ -60,7 +60,6 @@ public partial class MainForm : Form
         return products;
     }
 
-
     private void UpdateTreeView()
     {
         GroupTreeView.Nodes.Clear();
@@ -87,9 +86,6 @@ public partial class MainForm : Form
     private void PopulateTreeView(int? parentId, TreeNode? parentNode)
     {
         List<GroupModel>? children = _productionService.GetAllChildGroupById(parentId);
-
-        //if (children == null) return;
-
         foreach (GroupModel? gr in children)
         {
             TreeNode? childNode = new() { Text = gr.Name, Name = gr.Id.ToString(), Tag = gr };
@@ -164,18 +160,19 @@ public partial class MainForm : Form
     {
         GroupModel? group = GetSelectedGroup();
         if (group == null) return;
-        var result = MessageBox.Show("გსურთ კატეგორიის და შემავალი პროდუქციის წაშლა?", "გაფრთხილება!", MessageBoxButtons.YesNo);
+        DialogResult result = MessageBox.Show("გსურთ კატეგორიის და შემავალი პროდუქციის წაშლა?", "გაფრთხილება!", MessageBoxButtons.YesNo);
         if (result == DialogResult.No ) return;
         if (_productionService.GroupHasChildGroup(group))
         {
             result = MessageBox.Show("კატეგორია შეიცავს ქვე კატეგორიებს გსურთ მათი წაშლა?", "გაფრთხილება!", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
             {
-                List<GroupModel>? groups = _productionService.GetAllChildGroupById(group.Id);
-                groups?.Add(group);
-                _productionService.DeleteGroupRange(groups!);
-                List<ProductModel> products = GetProductsFromGroup(GetSelectedGroup());
+                List<GroupModel> groups = _productionService.GetSelectedTree(group);
+                List<ProductModel> products = new();
+                foreach (GroupModel gr in groups)
+                    products.AddRange(GetProductsFromGroup(gr));
                 _productionService.DeleteProductRange(products);
+                _productionService.DeleteGroupRange(groups!);
                 UpdateTreeView();
                 return;
             }
@@ -190,7 +187,7 @@ public partial class MainForm : Form
             }
         }
 
-        var list = _productionService.GetProductsByGroup(group);
+        List<ProductModel> list = _productionService.GetProductsByGroup(group);
         _productionService.DeleteProductRange(list);
         _productionService.DeleteGroup(group);
         UpdateTreeView();
@@ -200,5 +197,10 @@ public partial class MainForm : Form
     {
         GroupTreeView.SelectedNode = e.Node;
         UpdateDataGrid();
+    }
+
+    private void toolStripButton1_Click(object sender, EventArgs e)
+    {
+        //var sg = _productionService.GetSelectedTree(GetSelectedGroup());
     }
 }

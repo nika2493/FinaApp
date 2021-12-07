@@ -1,14 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using FinaApp.Services.Abstraction;
-using FinaData.Data;
+﻿using FinaApp.Services.Abstraction;
 using FinaData.Models;
 
 namespace FinaDesktop;
@@ -17,10 +7,10 @@ public partial class GroupForm : Form
     private readonly IProductionService _productionService;
     private readonly GroupModel _group;
     private readonly bool _add;
-    private readonly string _inputName;
-#pragma warning disable CS8618
+    private readonly string? _inputName;
+
     public GroupForm(IProductionService productionService, GroupModel group, bool add)
-#pragma warning restore CS8618
+
     {
         _productionService = productionService;
         _group = group;

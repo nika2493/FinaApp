@@ -1,17 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using FinaApp.Services.Abstraction;
-using FinaData.Data;
+﻿using FinaApp.Services.Abstraction;
 using FinaData.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace FinaDesktop;
 
@@ -20,13 +8,9 @@ public partial class ProductForm : Form
     private readonly IProductionService _productionService;
     private readonly ProductModel _product;
     private readonly bool _add;
-    private readonly int _inputCode;
-    private readonly string _inputName;
-
-
-#pragma warning disable CS8618
+    private readonly int? _inputCode;
+    private readonly string? _inputName;
     public ProductForm(IProductionService productionService, ProductModel product, bool add)
-#pragma warning restore CS8618
     {
         _productionService = productionService;
         _product = product;

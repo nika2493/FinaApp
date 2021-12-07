@@ -26,6 +26,7 @@ public interface IProductionService
     void DeleteCountry(CountryModel country);
     void DeleteCountryRange(IEnumerable<CountryModel> countries);
     //Utility
+    List<GroupModel> GetSelectedTree(GroupModel group);
     List<GroupModel> GetAllChildGroupById(int? id);
     List<ProductModel> GetProductsByGroup(GroupModel group);
     bool GroupHasChildGroup(GroupModel group);
